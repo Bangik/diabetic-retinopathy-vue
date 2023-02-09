@@ -3,7 +3,11 @@
     <div class="container mt-3">
       <div class="site-heading">
         <h1>Diabetic Retinopathy Detection</h1>
-        <span class="subheading">An Artificial Intelligence for detect Diabetic Retinopathy phase</span>
+        <span class="subheading">An Artificial Intelligence for detect Diabetic Retinopathy stage</span>
+        <br>
+        <span class="subheading">How to use:</span>
+        <br>
+        <span class="subheading">1. Upload image for detect; 2. Wait for the result; 3. See the result; 4. Fix the result if incorrect</span>
       </div>
     </div>
   </header>
