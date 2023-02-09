@@ -13,6 +13,9 @@
           <li class="nav-item">
             <RouterLink to="/history" class="nav-link">History</RouterLink>
           </li>
+          <li class="nav-item">
+            <RouterLink to="/about" class="nav-link">About</RouterLink>
+          </li>
         </ul>
       </div>
     </div>
