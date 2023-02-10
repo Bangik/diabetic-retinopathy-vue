@@ -2,7 +2,7 @@
   import ModalFixItemVue from '../components/ModalFixItem.vue';
   import DataTable from 'datatables.net-vue3'
   import DataTablesLib from 'datatables.net-bs5';
-  import axios from 'axios';
+  import httpInstance from '../Http.js';
   DataTable.use(DataTablesLib);
 
   const columns = [
@@ -40,7 +40,7 @@
     },
     methods: {
       getDatas() {
-        axios.get('http://localhost:5000/history')
+        httpInstance.get('/history')
           .then((response) => {
             this.datas = response.data.data;
           })
@@ -65,7 +65,6 @@
       <div class="site-heading">
         <h1>Detection History</h1>
         <span class="subheading">You can fix the detection results if the detection results are incorrect to improve accuracy when the model is retrained</span>
-        <button type="button" @click="reload">tes</button>
       </div>
     </div>
   </header>
