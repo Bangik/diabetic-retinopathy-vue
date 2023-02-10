@@ -24,7 +24,12 @@
 </script>
 
 <script>
+  import { ref } from "vue"; 
+  let dt;
+  const table = ref();
+
   export default {
+    name: 'HistoryView',
     components: {
       ModalFixItemVue
     },
@@ -42,10 +47,14 @@
           .catch((error) => {
             console.log(error);
           })
-      }
+      },
+      reload() {
+        dt.ajax.url("http://localhost:5000/history").load();
+      },
     },
     mounted() {
       this.datas = this.getDatas();
+      dt = table.value.dt();
     }
   }
 </script>
@@ -56,6 +65,7 @@
       <div class="site-heading">
         <h1>Detection History</h1>
         <span class="subheading">You can fix the detection results if the detection results are incorrect to improve accuracy when the model is retrained</span>
+        <button type="button" @click="reload">tes</button>
       </div>
     </div>
   </header>
@@ -71,7 +81,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="table-responsive">
-                    <DataTable :columns="columns" ajax="http://localhost:5000/history" :options="{order: [[0, 'desc']]}" class="table table-hover">
+                    <DataTable :columns="columns" ajax="http://localhost:5000/history" :options="{order: [[0, 'desc']]}" class="table table-hover" ref="table">
                       <thead>
                         <tr>
                           <th>#</th>
@@ -96,7 +106,9 @@
   <ModalFixItemVue 
     v-for="data in datas" 
     :key="data.id" 
-    :id="'modal'+data.id" 
+    :id="data.id"
+    :idModal="'modal'+data.id" 
+    :result="data.result"
   />
 </template>
 
