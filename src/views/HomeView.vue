@@ -1,3 +1,54 @@
+<script>
+  // import axios from 'axios';
+  import httpInstance from '../Http.js';
+
+  export default {
+    name: 'HomeView',
+    data() {
+      return {
+        imageFile: null,
+        image: '',
+        result: '',
+        probability: '',
+      }
+    },
+    methods: {
+      getLastData() {
+        httpInstance.get('/last')
+          .then((response) => {
+            this.image = 'http://localhost:5000/'+response.data.data.path;
+            this.result = response.data.data.result;
+            this.probability = response.data.data.probability;
+          })
+          .catch(() => {
+            this.image = 'src/assets/image/00cc2b75cddd.png';
+            this.result = 'Normal';
+            this.probability = '0.99';
+          })
+      },
+      uploadImage(e) {
+        this.imageFile = e.target.files[0];
+      },
+      SubmitData() {
+        let formData = new FormData(document.getElementById('formUpload'));
+        formData.append('file', this.imageFile);
+        httpInstance.post('/upload', formData)
+          .then((response) => {
+            this.image = response.data.url_image;
+            this.result = response.data.prediction;
+            this.probability = response.data.probability;
+          })
+          .catch((error) => {
+            alert(error);
+          })
+      }
+    },
+    mounted() {
+      this.getLastData();
+    }
+  }
+</script>
+
 <template>
   <header>
     <div class="container mt-3">
@@ -22,18 +73,18 @@
           <div class="card-body">
             <div class="row">
               <div class="col-md-6">
-                <img src="@/assets/image/00cc2b75cddd.png" class="img-fluid" alt="Example Image">
+                <img :src="image" class="img-fluid" alt="Example Image">
               </div>
               <div class="col-md-6">
                 <h6 class="card-title">Detection Result:</h6>
-                <p class="card-text">Normal</p>
+                <p class="card-text">{{ result == 1 ? 'NPDR Mild' : result == 2 ? 'NPDR Moderate' : result == 3 ? 'NPDR Severe' : result == 4 ? 'PDR' : 'Normal' }}</p>
                 <h6 class="card-title">Probability:</h6>
-                <p class="card-text">0.99</p>
+                <p class="card-text">{{ probability }}</p>
                 <hr>
-                <form>
+                <form @submit.prevent="SubmitData" id="formUpload">
                   <div class="mb-3">
-                    <label for="formFile" class="form-label">Upload Image</label>
-                    <input class="form-control" type="file" id="formFile">
+                    <label for="file" class="form-label">Upload Image</label>
+                    <input class="form-control" type="file" id="file" name="file" @change="uploadImage">
                   </div>
                   <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
