@@ -2,23 +2,52 @@
   import ModalFixItemVue from '../components/ModalFixItem.vue';
   import DataTable from 'datatables.net-vue3'
   import DataTablesLib from 'datatables.net-bs5';
+  import axios from 'axios';
   DataTable.use(DataTablesLib);
 
   const columns = [
     { data: 'id' },
-    { data: 'image', render: function (data) {
-      return '<img src="' + data + '" width="100px" height="100px" />';
+    { data: 'path', render: function (data) {
+      return '<img src="http://localhost:5000/' + data + '" class="retina-img"/>';
     } },
-    { data: 'result' },
+    { data: 'result', render: function (data) {
+      return data == 1 ? 'NPDR Mild' : data == 2 ? 'NPDR Moderate' : data == 3 ? 'NPDR Severe' : data == 4 ? 'PDR' : 'Normal';
+    } },
     { data: 'probability' },
-    { data: 'actual'},
-    { data: 'date' },
-    { data: 'action', render: function (data) {
-      // return '<button type="button" class="btn btn-primary" @click="showModal('+data+')">Fix Result</button>';
-      // return modalFixItemVue;
+    { data: 'created', render: function (data) {
+      return new Date(data).toLocaleString('id-ID');
+    } },
+    { data: 'id', render: function (data) {
       return '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal'+data+'">Fix Result</button>';
     } },
   ];
+</script>
+
+<script>
+  export default {
+    components: {
+      ModalFixItemVue
+    },
+    data() {
+      return {
+        datas: []
+      }
+    },
+    methods: {
+      getDatas() {
+        axios.get('http://localhost:5000/history')
+          .then((response) => {
+            this.datas = response.data.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      }
+    },
+    mounted() {
+      this.datas = this.getDatas();
+    }
+  }
 </script>
 
 <template>
@@ -42,14 +71,13 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="table-responsive">
-                    <DataTable :columns="columns" ajax="/data.json" :options="{order: [[0, 'desc']]}" class="table table-hover">
+                    <DataTable :columns="columns" ajax="http://localhost:5000/history" :options="{order: [[0, 'desc']]}" class="table table-hover">
                       <thead>
                         <tr>
                           <th>#</th>
                           <th>Image</th>
                           <th>Result</th>
                           <th>Probability</th>
-                          <th>Actual</th>
                           <th>Date</th>
                           <th>Action</th>
                         </tr>
@@ -65,7 +93,11 @@
     </div>
   </main>
 
-  <ModalFixItemVue id="modal1" />
+  <ModalFixItemVue 
+    v-for="data in datas" 
+    :key="data.id" 
+    :id="'modal'+data.id" 
+  />
 </template>
 
 <style>
