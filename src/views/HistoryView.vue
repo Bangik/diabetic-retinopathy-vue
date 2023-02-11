@@ -51,6 +51,15 @@
       reload() {
         dt.ajax.url("http://localhost:5000/history").load();
       },
+      downloadCSV() {
+        httpInstance.get('/export-csv')
+          .then(() => {
+            window.open('http://localhost:5000/export-csv', '_blank');
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      }
     },
     mounted() {
       this.datas = this.getDatas();
@@ -74,7 +83,8 @@
         <div class="col-md-12 mt-3">
           <div class="card">
             <div class="card-header">
-              <h5 class="card-title">Detection History</h5>
+              <h5 class="card-title float-start">Detection History</h5>
+              <button type="button" class="btn btn-primary float-end" @click="downloadCSV">Export CSV</button>
             </div>
             <div class="card-body">
               <div class="row">
