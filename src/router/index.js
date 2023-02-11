@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import HistoryView from '../views/HistoryView.vue'
@@ -9,23 +10,34 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      meta: {
+        title: 'Diabetic Retinopathy - Home'
+      }
     },
     {
       path: '/history',
       name: 'history',
-      component: HistoryView
+      component: HistoryView,
+      meta: {
+        title: 'Diabetic Retinopathy - History'
+      }
     },
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
+      component: () => import('../views/AboutView.vue'),
+      meta: {
+        title: 'Diabetic Retinopathy - About'
+      }
     }
   ],
   linkActiveClass: 'active',
+})
+
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title
+  next()
 })
 
 router.beforeResolve((to, from, next) => {
