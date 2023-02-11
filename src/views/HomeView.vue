@@ -1,5 +1,4 @@
 <script>
-  // import axios from 'axios';
   import httpInstance from '../Http.js';
 
   export default {
@@ -35,7 +34,7 @@
         httpInstance.post('/upload', formData)
           .then((response) => {
             this.image = response.data.url_image;
-            this.result = response.data.prediction;
+            this.result = response.data.stage;
             this.probability = response.data.probability;
           })
           .catch((error) => {
