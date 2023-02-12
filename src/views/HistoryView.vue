@@ -3,6 +3,8 @@
   import DataTable from 'datatables.net-vue3'
   import DataTablesLib from 'datatables.net-bs5';
   import httpInstance from '../Http.js';
+  import moment from 'moment';
+  import 'moment-timezone';
   DataTable.use(DataTablesLib);
   
   const VUE_APP_API_URL= 'http://ec2-108-136-238-151.ap-southeast-3.compute.amazonaws.com'
@@ -17,7 +19,7 @@
     } },
     { data: 'probability' },
     { data: 'created', render: function (data) {
-      return new Date(data).toLocaleString('id-ID');
+      return moment.unix(data).tz(moment.tz.guess()).format('DD MMM YYYY HH:mm:ss');
     } },
     { data: 'id', render: function (data) {
       return '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal'+data+'">Fix Result</button>';
