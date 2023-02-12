@@ -1,6 +1,8 @@
 <script>
   import httpInstance from '../Http.js';
 
+  const VUE_APP_API_URL= 'http://ec2-108-136-238-151.ap-southeast-3.compute.amazonaws.com'
+
   export default {
     name: 'HomeView',
     data() {
@@ -15,7 +17,7 @@
       getLastData() {
         httpInstance.get('/last')
           .then((response) => {
-            this.image = 'http://localhost:5000/'+response.data.data.path;
+            this.image = VUE_APP_API_URL + '/' + response.data.data.path;
             this.result = response.data.data.result;
             this.probability = response.data.data.probability;
           })

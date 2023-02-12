@@ -1,9 +1,11 @@
 import axios from 'axios'
 import NProgress from 'nprogress'
 
+const VUE_APP_API_URL= 'http://ec2-108-136-238-151.ap-southeast-3.compute.amazonaws.com'
+
 // create a new axios instance
 const instance = axios.create({
-  baseURL: 'http://localhost:5000'
+  baseURL: VUE_APP_API_URL,
 })
 
 // before a request is made start the nprogress

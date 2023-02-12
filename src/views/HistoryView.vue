@@ -4,11 +4,13 @@
   import DataTablesLib from 'datatables.net-bs5';
   import httpInstance from '../Http.js';
   DataTable.use(DataTablesLib);
+  
+  const VUE_APP_API_URL= 'http://ec2-108-136-238-151.ap-southeast-3.compute.amazonaws.com'
 
   const columns = [
     { data: 'id' },
     { data: 'path', render: function (data) {
-      return '<img src="http://localhost:5000/' + data + '" class="retina-img"/>';
+      return '<img src="' + VUE_APP_API_URL + '/' + data + '" class="retina-img"/>';
     } },
     { data: 'result', render: function (data) {
       return data == 1 ? 'NPDR Mild' : data == 2 ? 'NPDR Moderate' : data == 3 ? 'NPDR Severe' : data == 4 ? 'PDR' : 'Normal';
@@ -27,7 +29,7 @@
   import { ref } from "vue"; 
   let dt;
   const table = ref();
-
+  const VUE_APP_API_URLS = 'http://ec2-108-136-238-151.ap-southeast-3.compute.amazonaws.com'
   export default {
     name: 'HistoryView',
     components: {
@@ -35,7 +37,7 @@
     },
     data() {
       return {
-        datas: []
+        datas: [],
       }
     },
     methods: {
@@ -45,19 +47,19 @@
             this.datas = response.data.data;
           })
           .catch((error) => {
-            console.log(error);
+            alert(error);
           })
       },
       reload() {
-        dt.ajax.url("http://localhost:5000/history").load();
+        dt.ajax.url(VUE_APP_API_URLS + '/history').load();
       },
       downloadCSV() {
         httpInstance.get('/export-csv')
           .then(() => {
-            window.open('http://localhost:5000/export-csv', '_blank');
+            window.open(VUE_APP_API_URLS + '/export-csv', '_blank');
           })
           .catch((error) => {
-            console.log(error);
+            alert(error);
           })
       }
     },
@@ -90,7 +92,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="table-responsive">
-                    <DataTable :columns="columns" ajax="http://localhost:5000/history" :options="{order: [[0, 'desc']]}" class="table table-hover" ref="table">
+                    <DataTable :columns="columns" :ajax="VUE_APP_API_URL + '/history'" :options="{order: [[0, 'desc']]}" class="table table-hover" ref="table">
                       <thead>
                         <tr>
                           <th>#</th>
