@@ -1,5 +1,5 @@
 <script>
-  import axios from 'axios';
+  import httpInstance from '../Http.js';
   import HistoryView from '../views/HistoryView.vue';
 
   export default {
@@ -10,7 +10,7 @@
         const data = {
           result: result
         }
-        await axios.put('http://localhost:5000/history/' + this.id, data)
+        await httpInstance.put('/history/' + this.id, data)
           .then(() => {
             HistoryView.methods.reload();
           })
