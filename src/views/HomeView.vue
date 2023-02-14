@@ -1,7 +1,8 @@
+<!-- eslint-disable no-undef -->
 <script>
   import httpInstance from '../Http.js';
 
-  const VUE_APP_API_URL= 'http://ec2-108-136-238-151.ap-southeast-3.compute.amazonaws.com'
+  const VUE_APP_API_URL= import.meta.env.VITE_APP_API_URL;
 
   export default {
     name: 'HomeView',
@@ -35,7 +36,7 @@
         formData.append('file', this.imageFile);
         httpInstance.post('/upload', formData)
           .then((response) => {
-            this.image = response.data.url_image;
+            this.image = VUE_APP_API_URL + '/' + response.data.url_image;
             this.result = response.data.stage;
             this.probability = response.data.probability;
           })
