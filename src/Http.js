@@ -1,7 +1,8 @@
+/* eslint-disable no-undef */
 import axios from 'axios'
 import NProgress from 'nprogress'
 
-const VUE_APP_API_URL= 'http://ec2-108-136-238-151.ap-southeast-3.compute.amazonaws.com'
+const VUE_APP_API_URL= import.meta.env.VITE_APP_API_URL;
 
 // create a new axios instance
 const instance = axios.create({

@@ -1,3 +1,4 @@
+<!-- eslint-disable no-undef -->
 <script setup>
   import ModalFixItemVue from '../components/ModalFixItem.vue';
   import DataTable from 'datatables.net-vue3'
@@ -7,7 +8,7 @@
   import 'moment-timezone';
   DataTable.use(DataTablesLib);
   
-  const VUE_APP_API_URL= 'http://ec2-108-136-238-151.ap-southeast-3.compute.amazonaws.com'
+  const VUE_APP_API_URL= import.meta.env.VITE_APP_API_URL;
 
   const columns = [
     { data: 'id' },
@@ -31,7 +32,7 @@
   import { ref } from "vue"; 
   let dt;
   const table = ref();
-  const VUE_APP_API_URLS = 'http://ec2-108-136-238-151.ap-southeast-3.compute.amazonaws.com'
+  const VUE_APP_API_URLS = import.meta.env.VITE_APP_API_URL
   export default {
     name: 'HistoryView',
     components: {
